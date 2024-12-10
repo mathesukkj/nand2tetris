@@ -1,6 +1,7 @@
 import sys
 import parser
 import os
+import symbol_table
 
 
 def main():
@@ -17,15 +18,28 @@ def main():
 
 def translate_assembly_file_into_binary_file(file_path: str, output_file):
   with open(file_path) as file:
-    first_line = True
+    map_symbols(file)
+
+    line_number = 0
     for line in file:
-      binary = parser.parse_line(line)
-      if not first_line:
+      binary = parser.parse_line(line, line_number)
+      if line_number > 0:
         output_file.write("\n")
       if binary != "":
         output_file.write(binary)
-        first_line = False
+        line_number += 1
 
+  print(symbol_table.symbol_to_address)
+
+
+def map_symbols(file):
+  line_number = 0
+  for line in file:
+    binary = parser.parse_line(line, line_number)
+    if binary != "":
+      line_number += 1
+
+  file.seek(0)
 
 if __name__ == "__main__":
   main()
