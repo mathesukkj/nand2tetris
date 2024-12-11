@@ -24,10 +24,22 @@ symbol_to_address = {
     "THAT": "4"
 }
 
+new_variable_addr = 16
+
 
 def add(key: str, value: str):
   symbol_to_address[key] = value
 
 
-def get(key: str) -> str:
+def get(key: str) -> str | None:
+  return symbol_to_address.get(key)
+
+
+def create_variable(key: str) -> str:
+  global new_variable_addr
+
+  add(key, str(new_variable_addr))
+
+  new_variable_addr += 1
+
   return symbol_to_address[key]

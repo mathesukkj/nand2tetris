@@ -18,24 +18,22 @@ def main():
 
 def translate_assembly_file_into_binary_file(file_path: str, output_file):
   with open(file_path) as file:
-    map_symbols(file)
+    map_labels(file)
 
     line_number = 0
     for line in file:
       binary = parser.parse_line(line, line_number)
-      if line_number > 0:
-        output_file.write("\n")
       if binary != "":
+        if line_number > 0:
+          output_file.write("\n")
         output_file.write(binary)
         line_number += 1
 
-  print(symbol_table.symbol_to_address)
 
-
-def map_symbols(file):
+def map_labels(file):
   line_number = 0
   for line in file:
-    binary = parser.parse_line(line, line_number)
+    binary = parser.parse_label(line, line_number)
     if binary != "":
       line_number += 1
 
