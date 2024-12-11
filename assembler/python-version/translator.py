@@ -1,3 +1,5 @@
+import symbol_table
+
 comp_instructions = {
     "0": "0101010",
     "1": "0111111",
@@ -58,7 +60,12 @@ def translate_mnemonic_into_binary(instruction: str) -> str:
 
 
 def handle_A_instruction(instruction: str) -> str:
-  address = int(instruction[1:])
+  address = instruction[1:]
+
+  if not address.isnumeric():
+    address = symbol_table.get(address) or symbol_table.create_variable(address)
+
+  address = int(address)
   return f"0{bin(address)[2:].zfill(15)}"
 
 
